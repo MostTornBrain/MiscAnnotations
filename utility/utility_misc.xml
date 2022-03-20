@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+	<!-- 
+		Override the "basicnumber" template provided by CoreRPG.   This appears to be used for all underlying "misc" value fields on the character sheet.
+	-->
+	<template name="basicnumber" merge="join">
+	<simplenumber>
+		<frame mergerule="replace" name="fielddark" offset="7,5,7,5" />
+		<stateframe>
+			<keyedit name="fieldfocus" offset="7,5,7,5" />
+			<hover name="fieldfocus" offset="7,5,7,5" hidereadonly="true" />
+			<drophilight name="fieldfocus" offset="7,5,7,5" hidereadonly="true" />
+		</stateframe>
+		<script file="common/scripts/numberBCS.lua" />
+	</simplenumber>
+	</template>
+
+
+	<!-- Notes window - copied mostly from the "motd" windowclass from CoreRPG. -->
+	<windowclass name="misc_note">
+		<frame>utilitybox</frame>
+		<placement>
+			<size width="400" height="400" />
+		</placement>
+		<sizelimits>
+			<dynamic />
+		</sizelimits>
+		<nodelete />
+		<script file="utility/scripts/misc_note.lua" />
+		<sheetdata>
+			<windowtitlebar name="title">
+			<!--	<resource>motd_window_title</resource> -->
+			</windowtitlebar>
+			<anchor_title_utilitybox name="contentanchor" />
+
+			<anchor_bottom_utilitybox name="bottomanchor" />
+
+			<formattedtextfield name="text">
+				<anchored to="contentanchor">
+					<top anchor="bottom" relation="relative" offset="20" />
+					<left offset="5" />
+					<right offset="-10" />
+					<bottom parent="bottomanchor" anchor="top" offset="-20" />
+				</anchored>
+				<frame name="groupbox" offset="15,15,20,15" />
+				<!-- <empty textres="motd_empty" hidereadonly="true" /> -->
+			</formattedtextfield>
+			<scrollbar>
+				<anchored to="text" />
+				<target>text</target>
+			</scrollbar>
+
+			<resize_utilitybox />
+			<close_utilitybox />
+		</sheetdata>
+	</windowclass>
+</root>
