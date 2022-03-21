@@ -1,5 +1,5 @@
 # MiscAnnotations
- Add rich-text notes to any numeric "misc" field on a char sheet.
+ Add rich-text notes to any numeric "misc" field on a char sheet in Fantasy Grounds Unity.
 
  Overtime, I find I will often forget where various miscellaneous adjustment values came from on a character sheet.  This extension will detect any numberic writeable field that has "misc" in its name, and will add the ability to CTRL-click on it to pop up a rich text editor to provide some annotation.
 
