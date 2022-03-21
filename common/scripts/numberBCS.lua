@@ -9,23 +9,9 @@ local sNotePath = nil;
 local widget = nil;
 local sMiscFieldName = nil;
 
--- strip out formattedtext from a string (Courtesy of Celestrian - https://www.fantasygrounds.com/forums/showthread.php?44196-Formattedtext-for-tooltips)
-function stripFormattedText(sText)
-	local sTextOnly = sText;
-	sTextOnly = sTextOnly:gsub("</p>","\n");
-	sTextOnly = sTextOnly:gsub("<.?[ubiphUBIPH]>","");
-	sTextOnly = sTextOnly:gsub("<.?table>","");
-	sTextOnly = sTextOnly:gsub("<.?frame>","");
-	sTextOnly = sTextOnly:gsub("<.?t.?>","");
-	sTextOnly = sTextOnly:gsub("<.?list>","");
-	sTextOnly = sTextOnly:gsub("<.?li>","");
-	return sTextOnly;  
-end
-
 
 -- NOTE: We purposely do not define onInit() as it appears doing so overrides some other low-level template's onInit() 
---       and then the number field does not function properly.
-
+--       and then the number field does not function properly.  Use onFirstLayout() instead.
 
 function onFirstLayout()
 	if super and super.onFirstLayout then
@@ -61,12 +47,14 @@ function onFirstLayout()
 			sMiscFieldName = sMiscPath;
 			sNotePath = sCharSheetPath .. ".miscnotes." .. sMiscPath;
 
+			-- Get the path to where the note should be in the database. 
 			local dbNode = DB.findNode(sNotePath .. ".text");
 			local sNoteText = "";
 			if dbNode then
 				sNoteText = dbNode.getText();
 			end
 
+			-- If the note exists, show the tooltip, and set the appropriate widget for status.
 			if sNoteText and sNoteText ~= "" then
 				widget = addBitmapWidget("combobox_button_active");
 				setTooltipText(sNoteText);
@@ -100,11 +88,15 @@ function onSourceUpdate()
 	local dbNode = DB.findNode(sNotePath .. ".text");
 	local sNoteText = "";
 
+	-- If the status icon already exists, destroy it.  We'll recreate it.
+	-- TODO: Would it be more efficient to have both widgets always present and just toggle their visibility?
+	--       How much memory does a widget take at runtime?
 	if widget then
 		widget.destroy();
 		widget = nil;
 	end
 
+	-- TODO: this is duplicate code from the end of onFirstLayout - make a common function.
 	if dbNode then
 		sNoteText = dbNode.getText();
 	end
@@ -130,19 +122,11 @@ function onClickDown(button, x, y)
 		returnCode = super.onClickDown(button, x, y);
 	end
 
-	-- Bail if not a misc field
-	if not isMisc then
+	-- Bail if not what we want
+	if (not isMisc) or isReadOnly() or (not Input.isControlPressed()) then
 		return returnCode;
 	end
-	
-	if isReadOnly() then
-		return returnCode;
-	end
-	
-	if not Input.isControlPressed() then
-		return returnCode;
-	end
-	
+
 	if button and button == 1 then		
 		local w = Interface.openWindow("misc_note", sNotePath);	
 		w.title.setValue(sMiscFieldName);
