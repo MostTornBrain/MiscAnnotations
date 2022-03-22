@@ -26,7 +26,7 @@ function onFirstLayout()
 	-- If it is a field with "misc" in its name, then continue processing.
 	local name = self.getName();
 	if name:find("misc",1,true) then
-		
+
 		-- Figure out where to store the misc note.  We can't just append it onto the existing DB path
 		-- as it could be contained within a structure that something else is parsing and relying on the exact format.
 		--
@@ -39,7 +39,7 @@ function onFirstLayout()
 		-- First check for cohorts, then regular PC if no cohort found
 		local sCharSheetPath, sMiscPath  = sPath:match("^(charsheet%..+%.cohorts%.id%-%d+)%.(.-)$");
 		if not sCharSheetPath then
-        	sCharSheetPath, sMiscPath = sPath:match("^(charsheet.id%-%d+)%.(.-)$");
+			sCharSheetPath, sMiscPath = sPath:match("^(charsheet.id%-%d+)%.(.-)$");
 		end
 
 		-- Only add the widget if this is a charsheet node.
@@ -127,8 +127,8 @@ function onClickDown(button, x, y)
 		return returnCode;
 	end
 
-	if button and button == 1 then		
-		local w = Interface.openWindow("misc_note", sNotePath);	
+	if button and button == 1 then
+		local w = Interface.openWindow("misc_note", sNotePath);
 		w.title.setValue(sMiscFieldName);
 		return nil;
 	end
